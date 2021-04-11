@@ -3,8 +3,6 @@ from settings import database_config
 from neo4j import GraphDatabase
 
 
-
-
 class GraphApi:
     def __init__(self, url, user, password):
         self._driver = GraphDatabase.driver(url, auth=(user, password))
