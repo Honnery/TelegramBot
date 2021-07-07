@@ -45,7 +45,6 @@ class GraphApi:
             if return_result:
                 return result.values()
 
-
 graph_api = GraphApi(
     database_config.get("DATABASE_INFO", "url"),
     database_config.get("DATABASE_INFO", "name"),

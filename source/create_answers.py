@@ -4,7 +4,7 @@ from telegram.ext import (
 )
 from import_custom_modules import call_function
 from db_commands import graph_api
-from source.utils.message_creation import create_message
+from utils.message_creation import create_message
 
 
 # ToDo Create subclasses for integration features
