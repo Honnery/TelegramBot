@@ -10,8 +10,7 @@ from telegram.ext import (
 CallbackQueryHandler,
 )
 
-from create_answers import find_new_answer
-from parse_answer import handle_prev_answer
+from process_answer import find_new_answer, handle_prev_answer
 from settings import telegram_config
 from utils.user_context import clear_context
 
