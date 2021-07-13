@@ -1,7 +1,7 @@
-
 class Node:
     def __init__(self, node):
         self._node = node
+
     @property
     def component_type(self):
         return next(iter(self._node.labels))
@@ -12,4 +12,3 @@ class Node:
 
     def __getitem__(self, item):
         return self._node[item]
-

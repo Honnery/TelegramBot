@@ -7,7 +7,7 @@ from telegram.ext import (
     MessageHandler,
     Filters,
     CallbackContext,
-CallbackQueryHandler,
+    CallbackQueryHandler,
 )
 
 from process_answer import find_new_answer, handle_prev_answer

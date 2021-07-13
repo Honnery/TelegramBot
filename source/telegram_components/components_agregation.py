@@ -13,7 +13,7 @@ class Button(AggregatedComponent):
         context.user_data["context"]["variants"] = variants
 
         reply_markup = ReplyKeyboardMarkup(
-            [[button_text] for button_text in variants.keys()],
+            self._define_buttons(variants),
             one_time_keyboard=True,
             resize_keyboard=True)
 
@@ -24,6 +24,10 @@ class Button(AggregatedComponent):
         ind = context.user_data["context"]["variants"][text]
         del context.user_data["context"]["variants"]
         return ind
+
+    @staticmethod
+    def _define_buttons(variants):
+        return [[button_text] for button_text in variants.keys()]
 
 
 class InlineKey(AggregatedComponent):
