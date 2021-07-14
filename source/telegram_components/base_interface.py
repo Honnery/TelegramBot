@@ -8,6 +8,9 @@ from abc import ABC, abstractmethod
 
 
 class BaseComponent(ABC):
+    """
+    Base class to represent required functions for components.
+    """
     @abstractmethod
     def create_answer(self, node, update: Update, context: CallbackContext):
         pass
@@ -21,12 +24,13 @@ class BaseComponent(ABC):
             query = update.callback_query
             context.bot.send_message(query.message.chat_id, text, reply_markup=reply_markup)
         else:
-            update.message.reply_text(
-                text,
-                reply_markup=reply_markup)
+            update.message.reply_text(text, reply_markup=reply_markup)
 
 
 class AggregatedComponent(BaseComponent):
+    """
+    Component that can be used as aggregated one
+    """
     def create_answer(self, nodes, update: Update, context: CallbackContext):
         input_desc = "ERROR"
         self._create_message(input_desc, update, context)

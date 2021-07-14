@@ -22,11 +22,20 @@ logger = logging.getLogger(__name__)
 
 
 def start(update: Update, context: CallbackContext):
+    """
+    For handler with command 'start'. Is Used to start conversation with bot.
+    Clear context for previous conversation.
+    Search for a new component.
+    """
     context = clear_context(context)
     find_new_answer(update, context)
 
 
 def receive_answer(update: Update, context: CallbackContext):
+    """
+    Handle previous answer if it is exists.
+    Search for a new answer.
+    """
     handle_prev_answer(update, context)
     find_new_answer(update, context)
 

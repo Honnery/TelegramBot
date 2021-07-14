@@ -8,6 +8,7 @@ from utils.user_context import clear_context, update_state
 
 
 class AggregateVariants(BaseComponent):
+    """ Component that able to aggregate few comp into one for example Buttoms, InlineKeys and etc"""
     def __init__(self):
         from . import conversation_interface
         self._conversation_interfaces = conversation_interface
@@ -34,6 +35,7 @@ class AggregateVariants(BaseComponent):
 
 
 class Input(BaseComponent):
+    """ Input component, node should has "text" param ..."""
     def create_answer(self, node, update: Update, context: CallbackContext):
         input_desc = node["text"]
         context.user_data["context"]["param_name"] = node["param_name"]
