@@ -5,6 +5,7 @@ class GraphApi(ABC):
     @abstractmethod
     def find_nodes_by_label(self, label):
         pass
+
     @abstractmethod
     def find_nodes_by_id(self, node_ind):
         pass
@@ -16,4 +17,3 @@ class GraphApi(ABC):
     @abstractmethod
     def match_current_node(self, node_ind=None):
         pass
-

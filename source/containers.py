@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 
 from databases.db_neo4j import Neo4jApi
-from messengers import telegram_wrappers
+from messengers.telegram import telegram_wrappers
 
 
 class Container(containers.DeclarativeContainer):
@@ -11,6 +11,6 @@ class Container(containers.DeclarativeContainer):
                                   messenger_config.BOT_INFO.token
                                   )
     graph_api = providers.Factory(Neo4jApi,
-                                 database_config.DATABASE_INFO.url,
-                                 database_config.DATABASE_INFO.name,
-                                 database_config.DATABASE_INFO.password)
+                                  database_config.DATABASE_INFO.url,
+                                  database_config.DATABASE_INFO.name,
+                                  database_config.DATABASE_INFO.password)

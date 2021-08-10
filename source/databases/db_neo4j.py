@@ -1,6 +1,7 @@
-from .node import Node
 from neo4j import GraphDatabase
+
 from .base_db import GraphApi
+from .node import Node
 
 
 class Neo4jApi(GraphApi):
@@ -53,5 +54,3 @@ class Neo4jApi(GraphApi):
     @staticmethod
     def _extract_nodes(result):
         return [Node(rec[0]) for rec in result]
-
-

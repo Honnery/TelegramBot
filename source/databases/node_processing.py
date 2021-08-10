@@ -1,4 +1,5 @@
 from dependency_injector.wiring import inject, Provide
+
 from databases.base_db import GraphApi
 
 

@@ -1,11 +1,11 @@
 import logging
 
 from telegram import Update
-from messengers.base_wrappers import BaseUserData
 
 import databases
 import process_answer
 from containers import Container
+from messengers.base_user_data import BaseUserData
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
