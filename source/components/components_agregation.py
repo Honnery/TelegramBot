@@ -3,14 +3,15 @@ from telegram.ext import (
     CallbackContext
 )
 from typing import Optional
+from messengers.base_wrappers import BaseUserData
 from .utils.agregated_components import collect_variants_from_nodes
 from .base_interface import AggregatedComponent
 
 
 class Button(AggregatedComponent):
-    def create_reply_markup(self, nodes, update: Update, context: CallbackContext):
+    def create_reply_markup(self, nodes, update: Update, user_data: BaseUserData):
         variants = collect_variants_from_nodes("text", nodes)
-        context.user_data["context"]["variants"] = variants
+        user_data.context["variants"] = variants
 
         reply_markup = ReplyKeyboardMarkup(
             self._define_buttons(variants),
@@ -19,10 +20,10 @@ class Button(AggregatedComponent):
 
         return reply_markup
 
-    def parse_answer(self, update: Update, context: CallbackContext):
+    def parse_answer(self, update: Update, user_data: BaseUserData):
         text = update.message.text
-        ind = context.user_data["context"]["variants"][text]
-        del context.user_data["context"]["variants"]
+        ind = user_data.context["variants"][text]
+        del user_data.context["variants"]
         return ind
 
     @staticmethod
@@ -31,7 +32,7 @@ class Button(AggregatedComponent):
 
 
 class InlineKey(AggregatedComponent):
-    def create_reply_markup(self, nodes, update: Update, context: CallbackContext):
+    def create_reply_markup(self, nodes, update: Update, user_data: BaseUserData):
         variants = collect_variants_from_nodes("text", nodes)
 
         inline_keys = self._define_inline_keys(variants)
@@ -42,5 +43,5 @@ class InlineKey(AggregatedComponent):
     def _define_inline_keys(variants):
         return [[InlineKeyboardButton(text, callback_data=node_id)] for text, node_id in variants.items()]
 
-    def parse_answer(self, update: Update, context: CallbackContext) -> Optional[int]:
+    def parse_answer(self, update: Update, user_data: BaseUserData) -> Optional[int]:
         return int(update.callback_query.data)

@@ -1,10 +1,8 @@
 from telegram import Update
-from telegram.ext import (
-    CallbackContext
-)
+
 from databases import find_next_nodes
+from messengers.base_wrappers import BaseUserData
 from .base_interface import BaseComponent
-from utils.user_context import clear_context, update_state
 
 
 class AggregateVariants(BaseComponent):
@@ -16,18 +14,18 @@ class AggregateVariants(BaseComponent):
     def create_answer(self,
                       node,
                       update: Update,
-                      context: CallbackContext):
-        reply_markup, state = self._answers_aggregation(node.id, update, context)
-        update_state(state, context)
+                      user_data: BaseUserData):
+        reply_markup, state = self._answers_aggregation(node.id, update, user_data)
+        user_data.state = state
         text = node["text"]
-        self._create_message(text, update, context, reply_markup)
+        self._create_message(text, update, user_data, reply_markup)
 
-    def _answers_aggregation(self, aggregation_node, update: Update, context: CallbackContext):
+    def _answers_aggregation(self, aggregation_node, update: Update, user_data: BaseUserData):
         next_nodes = find_next_nodes(aggregation_node)
         nodes_type = next_nodes[0].component_type
 
         component = self._get_aggregation_comp(nodes_type)
-        reply_markup = component.create_reply_markup(next_nodes, update, context)
+        reply_markup = component.create_reply_markup(next_nodes, update, user_data)
 
         return reply_markup, nodes_type
 
@@ -37,26 +35,26 @@ class AggregateVariants(BaseComponent):
 
 class Input(BaseComponent):
     """ Input component, node should has "text" param ..."""
-    def create_answer(self, node, update: Update, context: CallbackContext):
+    def create_answer(self, node, update: Update, user_data: BaseUserData):
         input_desc = node["text"]
-        context.user_data["context"]["param_name"] = node["param_name"]
-        self._create_message(input_desc, update, context)
-        context.user_data["prev_point_id"] = node.id
+        user_data.context["param_name"] = node["param_name"]
+        self._create_message(input_desc, update, user_data)
+        user_data.prev_point_id = node.id
 
     # ToDo extract context
-    def parse_answer(self, update: Update, context: CallbackContext) -> None:
+    def parse_answer(self, update: Update, user_data: BaseUserData) -> None:
         input_text = update.message.text
 
-        param_name = context.user_data["context"]["param_name"]
-        context.user_data["params"][param_name] = input_text
-        del context.user_data['context']['param_name']
+        param_name = user_data.context["param_name"]
+        user_data.properties[param_name] = input_text
+        del user_data.context['param_name']
 
 
 class Finish(BaseComponent):
 
-    def create_answer(self, node, update: Update, context: CallbackContext):
+    def create_answer(self, node, update: Update, user_data: BaseUserData):
         text = node["text"]
-        self._create_message(text, update, context)
+        self._create_message(text, update, user_data)
 
-    def parse_answer(self, update: Update, context: CallbackContext):
-        clear_context(context)
+    def parse_answer(self, update: Update, user_data: BaseUserData):
+        user_data.clear_context()

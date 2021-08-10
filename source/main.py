@@ -1,14 +1,11 @@
 import logging
 
 from telegram import Update
-from telegram.ext import (
-    CallbackContext,
-)
+from messengers.base_wrappers import BaseUserData
 
 import databases
 import process_answer
 from containers import Container
-from utils.user_context import clear_context
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -17,23 +14,23 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def start(update: Update, context: CallbackContext):
+def start(update: Update, user_data: BaseUserData):
     """
     For handler with command 'start'. Is Used to start conversation with bot.
     Clear context for previous conversation.
     Search for a new component.
     """
-    context = clear_context(context)
-    process_answer.find_new_answer(update, context)
+    user_data.clear_context()
+    process_answer.find_new_answer(update, user_data)
 
 
-def receive_answer(update: Update, context: CallbackContext):
+def receive_answer(update: Update, user_data: BaseUserData):
     """
     Handle previous answer if it is exists.
     Search for a new answer.
     """
-    process_answer.handle_prev_answer(update, context)
-    process_answer.find_new_answer(update, context)
+    process_answer.handle_prev_answer(update, user_data)
+    process_answer.find_new_answer(update, user_data)
 
 
 def main() -> None:
