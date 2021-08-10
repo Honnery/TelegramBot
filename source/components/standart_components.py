@@ -2,18 +2,19 @@ from telegram import Update
 from telegram.ext import (
     CallbackContext
 )
-from database import find_next_nodes
+from databases import find_next_nodes
 from .base_interface import BaseComponent
 from utils.user_context import clear_context, update_state
 
 
 class AggregateVariants(BaseComponent):
-    """ Component that able to aggregate few comp into one for example Buttoms, InlineKeys and etc"""
+    """ Component that able to aggregate few comp into one for example Buttons, InlineKeys and etc"""
     def __init__(self):
         from . import conversation_interface
         self._conversation_interfaces = conversation_interface
 
-    def create_answer(self, node,
+    def create_answer(self,
+                      node,
                       update: Update,
                       context: CallbackContext):
         reply_markup, state = self._answers_aggregation(node.id, update, context)

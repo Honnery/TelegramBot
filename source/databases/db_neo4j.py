@@ -1,9 +1,9 @@
-from settings import database_config
 from .node import Node
 from neo4j import GraphDatabase
+from .base_db import GraphApi
 
 
-class GraphApi:
+class Neo4jApi(GraphApi):
     def __init__(self, url, user, password):
         self._driver = GraphDatabase.driver(url, auth=(user, password))
 
@@ -55,7 +55,3 @@ class GraphApi:
         return [Node(rec[0]) for rec in result]
 
 
-graph_api = GraphApi(
-    database_config.get("DATABASE_INFO", "url"),
-    database_config.get("DATABASE_INFO", "name"),
-    database_config.get("DATABASE_INFO", "password"))

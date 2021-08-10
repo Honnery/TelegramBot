@@ -1,12 +1,14 @@
+from dependency_injector.wiring import inject, Provide
 from telegram import Update
-from database.db_commands import graph_api
 from telegram.ext import (
     CallbackContext,
 )
-from telegram_components import conversation_interface
-from database import find_next_nodes
-from utils.user_context import update_state
+
+from components import conversation_interface
+from databases import find_next_nodes
+from databases.base_db import GraphApi
 from post_processing import post_processes
+from utils.user_context import update_state
 
 
 def find_new_answer(update: Update, context: CallbackContext):
@@ -19,7 +21,8 @@ def find_new_answer(update: Update, context: CallbackContext):
     conversation_interface[label_type].create_answer(node, update, context)
 
 
-def find_post_process(update: Update, context: CallbackContext):
+@inject
+def find_post_process(update: Update, context: CallbackContext, graph_api: GraphApi = Provide['graph_api']):
     prev_node_ind = context.user_data["prev_point_id"]
     post_proc_nodes = graph_api.search_post_process(prev_node_ind)
 
