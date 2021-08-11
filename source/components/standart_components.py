@@ -1,7 +1,7 @@
-from databases import find_next_nodes
 from messengers.base_message_sender import BaseMessageSender
 from messengers.base_user_data import BaseUserData
 from .base_interface import BaseComponent
+from databases import node_processor
 
 
 class AggregateVariants(BaseComponent):
@@ -21,7 +21,7 @@ class AggregateVariants(BaseComponent):
         message_sender.send_message(text, reply_markup)
 
     def _answers_aggregation(self, aggregation_node, message_sender: BaseMessageSender, user_data: BaseUserData):
-        next_nodes = find_next_nodes(aggregation_node)
+        next_nodes = node_processor.find_next_nodes(aggregation_node)
         nodes_type = next_nodes[0].component_type
 
         component = self._get_aggregation_comp(nodes_type)
@@ -42,7 +42,6 @@ class Input(BaseComponent):
         message_sender.send_message(input_desc)
         user_data.prev_point_id = node.id
 
-    # ToDo extract context
     def parse_answer(self, message_sender: BaseMessageSender, user_data: BaseUserData) -> None:
         input_text = message_sender.prev_message_text
 
