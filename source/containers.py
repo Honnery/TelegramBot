@@ -1,6 +1,6 @@
 from dependency_injector import containers, providers
 
-from databases.db_neo4j import Neo4jApi
+from databases.neo4j.neo4j_db import Neo4jApi
 from messengers.telegram import telegram_wrappers
 
 

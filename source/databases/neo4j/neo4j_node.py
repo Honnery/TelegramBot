@@ -1,7 +1,7 @@
-class Node:
-    def __init__(self, node):
-        self._node = node
+from databases.base_node import BaseNode
 
+
+class Neo4jNode(BaseNode):
     @property
     def component_type(self):
         return next(iter(self._node.labels))

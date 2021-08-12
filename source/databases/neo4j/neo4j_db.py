@@ -1,7 +1,7 @@
 from neo4j import GraphDatabase
 
-from .base_db import GraphApi
-from .node import Node
+from databases.base_db import GraphApi
+from .neo4j_node import Neo4jNode
 
 
 class Neo4jApi(GraphApi):
@@ -15,7 +15,7 @@ class Neo4jApi(GraphApi):
                   """
 
         result = self._execute_command(command, return_result=True)
-        return [Node(rec[0]) for rec in result]
+        return [Neo4jNode(rec[0]) for rec in result]
 
     def find_nodes_by_id(self, node_ind):
         command = f"""
@@ -53,4 +53,4 @@ class Neo4jApi(GraphApi):
 
     @staticmethod
     def _extract_nodes(result):
-        return [Node(rec[0]) for rec in result]
+        return [Neo4jNode(rec[0]) for rec in result]
